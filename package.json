@@ -1,0 +1,21 @@
+{
+  "name": "koperasi_test",
+  "version": "1.0.0",
+  "description": "koperasi_test",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "webdriver-manager": "node_modules/.bin/webdriver-manager",
+    "protractor": "node_modules/.bin/protractor"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "lodash": "^4.17.11",
+    "protractor": "^5.4.1",
+    "protractor-api-resource": "^1.0.3"
+  },
+  "devDependencies": {
+    "@hetznercloud/protractor-test-helper": "^1.1.0"
+  }
+}
