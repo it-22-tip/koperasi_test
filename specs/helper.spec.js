@@ -1,6 +1,7 @@
 const _ = require('lodash');
 const login = async function () {
-  element(by.partialButtonText('Masuk')).click();
+  await element(by.partialButtonText('Masuk')).click();
+  return;
 }
 
 /**

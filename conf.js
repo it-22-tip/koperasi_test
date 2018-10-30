@@ -10,7 +10,8 @@ exports.config = {
   specs: [
     // 'specs/anggota-add.spec.js'
     // 'specs/sidebar.spec.js',
-    'specs/pages.add.spec.js'
+    'specs/pages.add.spec.js',
+    // 'specs/try.spec.js'
   ],
   /**
    * params bisa dipanggil di semua test
@@ -25,7 +26,9 @@ exports.config = {
   onPrepare() {
     //...
     const _ = require('lodash');
+    global.helper = require('./specs/helper.spec');
     require('@hetznercloud/protractor-test-helper/').installMatcher();
+    // global.login = require('./helper').login
   },
 };
 

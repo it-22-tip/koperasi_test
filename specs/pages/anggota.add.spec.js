@@ -14,7 +14,7 @@
 // input.anggota_simpsukarela
 
 
-var helper = require('../helper.spec');
+// var helper = require('../helper.spec');
 describe('xfocus login', function () {
   var appUrl = 'http://localhost/koperasi/masuk';
   var cl_no = '001';
