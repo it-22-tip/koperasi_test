@@ -59,7 +59,7 @@ const clickSidebarMenu = async function (target) {
 
   await browser.actions()
     .mouseUp()
-    .mouseMove(element(by.tagName('body')), {x: 300, y: 300})
+    .mouseMove(element(by.tagName('body')), {x: 300, y: 1})
     .perform();
   return true;
 }

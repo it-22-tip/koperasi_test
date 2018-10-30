@@ -9,7 +9,8 @@ exports.config = {
   },
   specs: [
     // 'specs/anggota-add.spec.js'
-    'specs/sidebar.spec.js'
+    // 'specs/sidebar.spec.js',
+    'specs/pages.add.spec.js'
   ],
   /**
    * params bisa dipanggil di semua test
@@ -23,7 +24,7 @@ exports.config = {
   },
   onPrepare() {
     //...
-    //browser.manage().window().setSize(1600, 1000);
+    const _ = require('lodash');
     require('@hetznercloud/protractor-test-helper/').installMatcher();
   },
 };

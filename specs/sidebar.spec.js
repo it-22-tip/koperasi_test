@@ -13,7 +13,7 @@ const list = [
   'tipe jasa',
   'tipe trans',
   'tipe akun',
-  'jenis kredit',
+  'jenis pinjaman',
   'jenis aset',
   'anggota',
   'tambahan modal',
@@ -49,21 +49,29 @@ describe('sidebar', function () {
   forEach(
     list,
     function (value, key) {
-      const title = startCase(toLower(value));
-      const fn = snakeCase(title);
-      fname = `${pagesPath}/${fn}.spec.js`;
-      // fs.writeFileSync(`${pagesPath}/${fn}.spec.js`, '')
+      // const title = toLower(value);
+
+
       it(value, async function () {
         await clickSidebarMenu(value);
+        var browserTitle = await browser.getTitle();
+        expect(toLower(browserTitle)).toEqual(toLower(value));
         await clickTambah();
-        /* let main = element(by.className('main'));
-        main.all(by.css('[ng-model]')).each(
+
+        const fn = snakeCase(toLower(value));
+        fname = `${pagesPath}/${fn}.add.spec.js`;
+        console.log(fname);
+        var mdl = `// model:`;
+        let main = await element(by.className('main'));
+        await main.all(by.css('[ng-model]')).each(
           async function (element, index) {
             var model = await element.getWebElement().getAttribute('ng-model');
-            console.log(model);
+            mdl += `\n// ${model}`
+            // console.log(model);
           }
-        ) */
-        // expect(browser.getTitle()).toEqual(title);
+        )
+        // console.log(mdl);
+        fs.writeFileSync(`${fname}`, mdl)
       });
     }
   );
