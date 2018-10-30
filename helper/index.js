@@ -1,8 +1,31 @@
 const _ = require('lodash');
 const login = async function () {
-  await element(by.partialButtonText('Masuk')).click();
-  return;
+  // await element(by.partialButtonText('Masuk')).click();
+  // return;
+  var appUrl = 'http://localhost/koperasi/masuk';
+  browser.get(appUrl);
+  element(by.partialButtonText('Masuk')).click();
+  expect(browser.getTitle()).toEqual('Dashboard');
 }
+
+/**
+ * Dropdown
+ */
+const dropdown = async function (model, selection) {
+    // var el = await element(by.model(model));
+    var el = await element(by.css(`[model="${model}"]`));
+    await el.click();
+    var vis = await el.element(by.className('menu transition'));
+    expect(vis.isDisplayed()).toBeTruthy();
+
+    await vis.all(by.repeater('item in items')).filter(
+      async function (element, index) {
+        var text = await element.getText();
+        return text === selection;
+      }
+    ).first().click();
+}
+
 
 /**
  * Membuka Sidebar dan click Logout
@@ -88,5 +111,6 @@ module.exports = {
   openSideBar,
   clickSidebarMenu,
   clickBackButton,
-  clickTambah
+  clickTambah,
+  dropdown
 }

@@ -28,12 +28,13 @@ const config = {
   onPrepare() {
     // global helper
     installMatcher();
-    var { clickBackButton, login, logout, openSideBar, clickSidebarMenu } = helper;
+    var { clickBackButton, login, logout, openSideBar, clickSidebarMenu, dropdown } = helper;
     global.clickBackButton = clickBackButton;
     global.login = login;
     global.logout = logout;
     global.clickSidebarMenu = clickSidebarMenu;
     global.openSideBar = openSideBar;
+    global.dropdown = dropdown;
   },
 };
 
