@@ -1,10 +1,12 @@
-exports.config = {
+import { installMatcher } from '@hetznercloud/protractor-test-helper/';
+import helper from './helper';
+const config = {
   // directConnect: true, // menggunakan chrome default, akan mendisable opsi seleniumAddress & capabilities
   seleniumAddress: 'http://localhost:4444/wd/hub',
   capabilities: {
     browserName: 'chrome',
     chromeOptions: {
-      args: ["--disable-gpu", "--disable-notifications", "--window-size=800,600"] // menggunakan headless chrome
+      args: ['--disable-gpu', '--disable-notifications', '--window-size=800,600'] // menggunakan headless chrome
     }
   },
   specs: [
@@ -24,11 +26,15 @@ exports.config = {
     password: 'TRIAL',
   },
   onPrepare() {
-    //...
-    const _ = require('lodash');
-    global.helper = require('./specs/helper.spec');
-    require('@hetznercloud/protractor-test-helper/').installMatcher();
-    // global.login = require('./helper').login
+    // global helper
+    installMatcher();
+    var { clickBackButton, login, logout, openSideBar, clickSidebarMenu } = helper;
+    global.clickBackButton = clickBackButton;
+    global.login = login;
+    global.logout = logout;
+    global.clickSidebarMenu = clickSidebarMenu;
+    global.openSideBar = openSideBar;
   },
 };
 
+export { config };

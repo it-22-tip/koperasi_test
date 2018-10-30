@@ -6,8 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "webdriver-manager": "node_modules/.bin/webdriver-manager",
+    "protractor-es6": "node -r @babel/register node_modules/.bin/protractor",
     "protractor": "node_modules/.bin/protractor",
-    "one": "npm run protractor conf2.js"
+    "page-scenario": "npm run protractor-es6 conf.js"
   },
   "author": "",
   "license": "MIT",

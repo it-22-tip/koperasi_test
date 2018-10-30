@@ -4,8 +4,8 @@ const forEach = require('lodash').forEach;
 const startCase = require('lodash').startCase;
 const toLower = require('lodash').toLower;
 const snakeCase = require('lodash').snakeCase;
-const clickSidebarMenu = require('./helper.spec').clickSidebarMenu;
-const clickTambah = require('./helper.spec').clickTambah;
+const clickSidebarMenu = require('../helper').clickSidebarMenu;
+const clickTambah = require('../helper').clickTambah;
 const list = [
   'resort',
   'jabatan',
