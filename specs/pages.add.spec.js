@@ -33,3 +33,9 @@ _.forEach(pgs, function(val) {
   require(`./pages/${val}.add.spec.js`);
 });
 
+describe('run add', function () {
+  it('run', async function () {
+    await logout();
+  })
+})
+

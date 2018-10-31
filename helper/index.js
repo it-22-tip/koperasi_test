@@ -43,6 +43,7 @@ const dropdown = async function (model, selection) {
  * Membuka Sidebar dan click Logout
  */
 const logout = async function () {
+  await openSideBar();
   var logoutButton = element(by.css('[ng-click="keluar()"]'));
   await browser.actions()
     .mouseMove(logoutButton)

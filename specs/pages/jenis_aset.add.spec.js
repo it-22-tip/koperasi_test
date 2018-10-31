@@ -15,6 +15,7 @@ describe('jenis aset add', function () {
     // await element(by.css('[ng-model="input.jnsaset_umur_bulan"]')).sendKeys(protractor.Key.ARROW_UP);
     // await element(by.css('[ng-model="input.jnsaset_umur_bulan"]')).sendKeys(protractor.Key.ARROW_UP);
     await element(by.css('[ng-model="input.jnsaset_umur_bulan"]')).sendKeys('12');
+    await element(by.css('[ng-model="input.jnsaset_umur_bulan"]')).clear();
     await browser.sleep('6000');
   });
 
