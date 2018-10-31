@@ -5,20 +5,21 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "webdriver-manager": "node_modules/.bin/webdriver-manager",
-    "protractor": "node -r @babel/register node_modules/.bin/protractor",
-    "protractor-cli": "node -r @babel/register run.js",
-    "page-scenario": "npm run protractor conf.js"
+    "wm:start": "node_modules/.bin/webdriver-manager start",
+    "wm:update": "node_modules/.bin/webdriver-manager update",
+    "start": "node -r @babel/register run.js"
   },
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@hetznercloud/protractor-test-helper": "^1.1.0",
     "chalk": "^2.4.1",
     "commander": "^2.19.0",
     "inquirer": "^6.2.0",
     "lodash": "^4.17.11",
     "protractor": "^5.4.1",
-    "protractor-api-resource": "^1.0.3"
+    "protractor-api-resource": "^1.0.3",
+    "protractor-helper": "^3.5.6"
   },
   "devDependencies": {
     "@babel/core": "^7.1.2",
@@ -26,7 +27,6 @@
     "@babel/plugin-transform-arrow-functions": "^7.0.0",
     "@babel/preset-env": "^7.1.0",
     "@babel/register": "^7.0.0",
-    "@hetznercloud/protractor-test-helper": "^1.1.0",
     "cross-env": "^5.2.0"
   }
 }
