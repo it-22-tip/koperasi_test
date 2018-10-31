@@ -30,6 +30,7 @@ describe('tambah anggota', function () {
   it('make me dizzy', async function () {
     browser.driver.manage().timeouts().setScriptTimeout(30000);
     browser.sleep(1000);
+    //
     await anggota_add(
       '112 - WIL 1',
       'kode-lama-1234','sample nama',

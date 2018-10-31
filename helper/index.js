@@ -112,6 +112,10 @@ const clickTambah = async function () {
   await button.click();
 }
 
+const clickFormTambah = async function () {
+
+}
+
 module.exports = {
   login,
   logout,
