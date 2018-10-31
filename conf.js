@@ -1,4 +1,5 @@
 import { installMatcher } from '@hetznercloud/protractor-test-helper/';
+import _ from 'lodash';
 import helper from './helper';
 const config = {
   // directConnect: true, // menggunakan chrome default, akan mendisable opsi seleniumAddress & capabilities
@@ -20,13 +21,12 @@ const config = {
    * browser.params.[paramskey]
   */
   params: {
-    base_url: 'http://xfocus.id.localhost',
-    cl_no: '111',
-    username: 'TRIAL',
-    password: 'TRIAL',
+    base_url: 'http://localhost/koperasi',
+    cl_no: '001',
+    username: 'edo',
+    password: 'edo',
   },
   onPrepare() {
-    // global helper
     installMatcher();
     var { clickBackButton, login, logout, openSideBar, clickSidebarMenu, dropdown } = helper;
     global.clickBackButton = clickBackButton;
