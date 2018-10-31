@@ -1,3 +1,4 @@
+import _ from 'lodash';
 const pages = ['resort',
 'jabatan',
 'jaminan',
@@ -20,6 +21,15 @@ const pages = ['resort',
 'jasa',
 'mutasi_simpanan'];
 
-var pgs = ['anggota'];
+var pgs = ['anggota', 'jenis_aset'];
 
-require(`./pages/${pgs}.add.spec.js`);
+describe('run add', function () {
+  it('run', async function () {
+    await login();
+  })
+})
+
+_.forEach(pgs, function(val) {
+  require(`./pages/${val}.add.spec.js`);
+});
+

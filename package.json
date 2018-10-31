@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "wm:start": "node_modules/.bin/webdriver-manager start",
     "wm:update": "node_modules/.bin/webdriver-manager update",
-    "start": "node -r @babel/register run.js"
+    "start": "node -r @babel/register run.js",
+    "protractor": "node -r @babel/register node_modules/.bin/protractor conf.js"
   },
   "author": "",
   "license": "MIT",
