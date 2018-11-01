@@ -6,6 +6,8 @@
 describe('jenis aset add', function () {
   it('open page', async function () {
     await clickSidebarMenu('jenis aset');
+    await clickContextMenu('edit');
+    await clickBackButton()
     await clickTambah();
   })
 
@@ -18,6 +20,10 @@ describe('jenis aset add', function () {
     await element(by.css('[ng-model="input.jnsaset_umur_bulan"]')).clear();
     await browser.sleep('6000');
   });
+
+  /* it('edit one', async function () {
+
+  }); */
 
   it('delete one', function () {
 

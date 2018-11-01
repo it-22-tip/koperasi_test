@@ -20,10 +20,12 @@ const anggota_add = async function (
   await element(by.model('input.anggota_kodelama')).sendKeys(anggota_kodelama);
   await element(by.model('input.anggota_nama')).sendKeys(anggota_nama);
   await element(by.model('input.anggota_lahir_tempat')).sendKeys(anggota_lahir_tempat);
+  await element(by.model('input.anggota_lahir_date')).clear();
   await element(by.model('input.anggota_lahir_date')).sendKeys(anggota_lahir_date);
   await dropdown('input.anggota_jk', anggota_jk);
   await dropdown('input.anggota_agama', anggota_agama);// input.anggota_agama
   await element(by.model('input.anggota_alamat')).sendKeys(anggota_alamat);
+  await element(by.model('input.anggota_masuk_date')).clear();
   await element(by.model('input.anggota_masuk_date')).sendKeys(anggota_masuk_date);
   await element(by.model('input.anggota_no_ktp')).sendKeys(anggota_no_ktp);
   await element(by.model('input.anggota_no_telp')).sendKeys(anggota_no_telp);

@@ -28,7 +28,16 @@ const config = {
   },
   onPrepare() {
     installMatcher();
-    var { clickBackButton, login, logout, openSideBar, clickSidebarMenu, clickTambah, dropdown } = helper;
+    var {
+      clickBackButton,
+      login,
+      logout,
+      openSideBar,
+      clickSidebarMenu,
+      clickTambah,
+      dropdown,
+      clickContextMenu
+    } = helper;
     global.clickBackButton = clickBackButton;
     global.login = login;
     global.logout = logout;
@@ -36,6 +45,7 @@ const config = {
     global.openSideBar = openSideBar;
     global.clickTambah = clickTambah;
     global.dropdown = dropdown;
+    global.clickContextMenu = clickContextMenu;
   },
 };
 

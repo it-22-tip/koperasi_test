@@ -51,13 +51,11 @@ describe('tambah anggota', function () {
     );
   });
 
-  it('membuka sidebar', async function () {
-    // console.log(helper);
+  /* it('membuka sidebar', async function () {
     await openSideBar();
     await clickSidebarMenu('jabatan');
-    // console.log(helper);
     browser.sleep(12000);
-  });
+  }); */
 
   /* it('membuka menu', async function () {
     await helper.openSideBar();

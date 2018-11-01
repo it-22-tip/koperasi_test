@@ -16,6 +16,7 @@
     "@hetznercloud/protractor-test-helper": "^1.1.0",
     "chalk": "^2.4.1",
     "commander": "^2.19.0",
+    "date-fns": "^2.0.0-alpha.25",
     "inquirer": "^6.2.0",
     "js-yaml": "^3.12.0",
     "lodash": "^4.17.11",
