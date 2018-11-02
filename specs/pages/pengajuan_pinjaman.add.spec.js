@@ -16,3 +16,8 @@
 // input.penjamin_pekerjaan
 // input.penjamin_fotoktp
 // input.penjamin_hubungan
+describe('tambah pengajuan pinjaman', function (){
+  it('', function () {
+
+  })
+})

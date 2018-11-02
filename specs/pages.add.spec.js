@@ -21,7 +21,7 @@ const pages = ['resort',
 'jasa',
 'mutasi_simpanan'];
 
-var pgs = ['anggota', 'jenis_aset'];
+var pgs = [/* 'anggota', 'jenis_aset',  */'pegawai'];
 
 describe('run add', function () {
   it('run', async function () {
