@@ -149,15 +149,15 @@ const getModelList = async function (page) {
 
   const one = function (str) {
     var x = str.split('.')
-    return `await element(by.model('${str}')).sendKeys(${x[1]})\n`;
+    return `await element(by.model('${str}')).sendKeys(${x[1]})`;
   }
 
   const two = function (str) {
     var x = str.split('.')
-    return `await dropdown('${str}', ${x[1]})\n`;
+    return `await dropdown('${str}', ${x[1]})`;
   }
   var params = []
-  var body = ''
+  var body = []
   const count_all = await form.all(by.css('[ng-model],[model]')).count();
   console.log(`count: ${count_all}`);
   await form.all(by.css('[ng-model],[model]')).each(
@@ -166,14 +166,17 @@ const getModelList = async function (page) {
       var ngModel = await elem.getAttribute('ng-model');
       var par = (model === null) ? ngModel : model;
       params.push(par.split('.')[1]);
-      body += (model === null) ? one(ngModel) : two(model);
+      body.push((model === null) ? one(ngModel) : two(model));
     }
   );
-  var paramsStr = params.join(' ,');
+  var paramsStr = params.join(',\n');
+  var bodyStr = body.join('\n')
   var func = `
-    async function (${paramsStr}) {
-      ${body}
-    }
+async function (
+${paramsStr}
+) {
+${bodyStr}
+}
   `
   console.log(func);
 }
