@@ -127,6 +127,57 @@ const clickContextMenu = async function (action) {
   await ctx.element(by.css(`[ng-click="$location.path(menuOpened + \'/${action}/\' + rightClickData.id)"]`)).click();
 }
 
+const getModelList = async function (page) {
+  await clickSidebarMenu(page);
+  await clickTambah();
+  const form = await element(by.className('form'));
+  /* const fields_count = await form.all(by.css('[ng-model]')).count();
+
+  await form.all(by.css('[ng-model]')).each(
+    async function(elem, index) {
+      var modelName = await elem.getAttribute('ng-model');
+      console.log(modelName);
+    }
+  );
+  const dropdown_count = await form.all(by.css('[model]')).count();
+  await form.all(by.css('[model]')).each(
+    async function(elem, index) {
+      var modelName = await elem.getAttribute('model');
+      console.log(modelName);
+    }
+  ) */
+
+  const one = function (str) {
+    var x = str.split('.')
+    return `await element(by.model('${str}')).sendKeys(${x[1]})\n`;
+  }
+
+  const two = function (str) {
+    var x = str.split('.')
+    return `await dropdown('${str}', ${x[1]})\n`;
+  }
+  var params = []
+  var body = ''
+  const count_all = await form.all(by.css('[ng-model],[model]')).count();
+  console.log(`count: ${count_all}`);
+  await form.all(by.css('[ng-model],[model]')).each(
+    async function (elem, index) {
+      var model = await elem.getAttribute('model');
+      var ngModel = await elem.getAttribute('ng-model');
+      var par = (model === null) ? ngModel : model;
+      params.push(par.split('.')[1]);
+      body += (model === null) ? one(ngModel) : two(model);
+    }
+  );
+  var paramsStr = params.join(' ,');
+  var func = `
+    async function (${paramsStr}) {
+      ${body}
+    }
+  `
+  console.log(func);
+}
+
 module.exports = {
   login,
   logout,
@@ -135,5 +186,6 @@ module.exports = {
   clickBackButton,
   clickTambah,
   dropdown,
-  clickContextMenu
+  clickContextMenu,
+  getModelList
 }

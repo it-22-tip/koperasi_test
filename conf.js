@@ -36,7 +36,8 @@ const config = {
       clickSidebarMenu,
       clickTambah,
       dropdown,
-      clickContextMenu
+      clickContextMenu,
+      getModelList
     } = helper;
     global.clickBackButton = clickBackButton;
     global.login = login;
@@ -46,6 +47,7 @@ const config = {
     global.clickTambah = clickTambah;
     global.dropdown = dropdown;
     global.clickContextMenu = clickContextMenu;
+    global.getModelList = getModelList;
   },
 };
 
