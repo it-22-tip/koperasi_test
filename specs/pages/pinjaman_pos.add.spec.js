@@ -1,5 +1,6 @@
 // model:
 import pinjaman_pos_add_form from '../forms/pinjaman_pos.add.form'
+import { forEach } from 'lodash';
 describe(
   'pinjaman pos',
   function () {
@@ -8,7 +9,44 @@ describe(
       async function () {
         // await clickSidebarMenu('pinjaman pos');
         // await clickTambah();
-        await getModelList('pinjaman pos');
+        // var ls = await listSideBar();
+        // console.log(ls);ls
+        var ls = [
+          'resort',
+          // 'jabatan',
+          // 'jaminan',
+          // 'tipe jasa',
+          'tipe trans',
+          // 'tipe akun',
+          // 'jenis pinjaman',
+          // 'jenis aset',
+          // 'anggota',
+          // 'akun',
+          // 'mata uang',
+          // 'pegawai',
+          // 'kategori aset',
+          // 'gaji',
+          // 'setor pusat',
+          // 'pengajuan pinjaman',
+          // 'pinjaman',
+          // 'pinjaman pos',
+          // 'jasa',
+          // 'mutasi simpanan',
+          // 'mutasi pegawai',
+          // 'realisasi pinjaman',
+          // 'mutasi anggota',
+          // 'simpanan anggota keluar',
+          // 'simpanan anggota masuk',
+          // 'cabang / unit',
+          // 'tambahan modal',
+          // 'modal',
+          // 'laporan pegawai',
+        ];
+        forEach(ls, async function (val, index) {
+          // console.log(val);
+          await getModelList(val);
+        })
+        // await getModelList('pinjaman pos');
         /* await pinjaman_pos_add_form(
           '', // kreditpos_nosp,
           '', // kreditpos_anggota_id,

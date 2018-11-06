@@ -1,6 +1,7 @@
 import { installMatcher } from '@hetznercloud/protractor-test-helper/';
 import _ from 'lodash';
 import helper from './helper';
+import path from 'path';
 const config = {
   // directConnect: true, // menggunakan chrome default, akan mendisable opsi seleniumAddress & capabilities
   seleniumAddress: 'http://localhost:4444/wd/hub',
@@ -37,7 +38,10 @@ const config = {
       clickTambah,
       dropdown,
       clickContextMenu,
-      getModelList
+      getModelList,
+      listSideBar,
+      generateTest,
+      bisaClickTambah
     } = helper;
     global.clickBackButton = clickBackButton;
     global.login = login;
@@ -48,6 +52,10 @@ const config = {
     global.dropdown = dropdown;
     global.clickContextMenu = clickContextMenu;
     global.getModelList = getModelList;
+    global.listSideBar = listSideBar;
+    global.bisaClickTambah = bisaClickTambah;
+    global.generateTest = generateTest;
+    global.rootPath = path.resolve(__dirname);
   },
 };
 

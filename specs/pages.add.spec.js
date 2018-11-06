@@ -33,10 +33,10 @@ describe('run add', function () {
     await login();
   })
 })
-
-_.forEach(pgs, function(val) {
+require(`./generate.pages.js`);
+/* _.forEach(pgs, function(val) {
   require(`./pages/${val}.add.spec.js`);
-});
+}); */
 
 describe('run add', function () {
   it('run', async function () {

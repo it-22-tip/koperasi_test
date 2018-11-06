@@ -1,5 +1,8 @@
 import _ from 'lodash';
-const { trim, toLower } = _;
+import path from 'path';
+const fs = require('fs');
+const { trim, toLower, forEach, snakeCase } = _;
+import { waitToBeNotDisplayed } from '@hetznercloud/protractor-test-helper';
 
 /**
  *
@@ -42,7 +45,8 @@ const dropdown = async function (model, selection) {
  */
 const logout = async function () {
   await openSideBar();
-  var logoutButton = element(by.css('[ng-click="keluar()"]'));
+  let selector = '[ng-click="keluar()"]'
+  var logoutButton = element(by.css(selector));
   await browser.actions()
     .mouseMove(logoutButton)
     .perform();
@@ -75,6 +79,7 @@ const clickSidebarMenu = async function (target) {
     .filter(selectorFunction)
     .first();
 
+  // await browser.wait(protractor.ExpectedConditions.visibilityOf(menu, 1000));
   await browser.actions()
     .mouseMove(menu)
     .perform();
@@ -85,6 +90,9 @@ const clickSidebarMenu = async function (target) {
     .mouseUp()
     .mouseMove(element(by.tagName('body')), {x: 300, y: 1})
     .perform();
+  // await browser.sleep(300);
+  //await browser.wait(protractor.ExpectedConditions.invisibilityOf(menu, 1000));
+    // await waitToBeNotDisplayed(menu)
 }
 
 const findClickMenu = async function () {
@@ -110,6 +118,15 @@ const clickTambah = async function () {
   await button.click();
 }
 
+/**
+ * Ke halaman click Tambah di sisi kiri atas
+ */
+const bisaClickTambah = async function () {
+  let selector = '[ng-click="$location.path(menuOpened + \'/add\')"]';
+  let counter = await element.all(by.css(selector)).count();
+  return counter > 0;
+}
+
 const clickFormTambah = async function () {
 
 }
@@ -127,58 +144,86 @@ const clickContextMenu = async function (action) {
   await ctx.element(by.css(`[ng-click="$location.path(menuOpened + \'/${action}/\' + rightClickData.id)"]`)).click();
 }
 
+const listSideBar = async function () {
+  await openSideBar();
+  let arr = [];
+  let selector = '[ng-click="$location.path(menu_anak.menu_url)"]';
+  const selectorFunction = async function (element, index) {
+    var menuText = await element.getText();
+    menuText = trim(toLower(menuText));
+    // console.log(menuText);
+    arr.push(menuText);
+  }
+
+  await element.all(by.css(selector))
+    .each(selectorFunction);
+  return arr;
+}
+
 const getModelList = async function (page) {
-  await clickSidebarMenu(page);
-  await clickTambah();
+  // await clickSidebarMenu(page);
+  //  await clickTambah();
   const form = await element(by.className('form'));
-  /* const fields_count = await form.all(by.css('[ng-model]')).count();
 
-  await form.all(by.css('[ng-model]')).each(
-    async function(elem, index) {
-      var modelName = await elem.getAttribute('ng-model');
-      console.log(modelName);
-    }
-  );
-  const dropdown_count = await form.all(by.css('[model]')).count();
-  await form.all(by.css('[model]')).each(
-    async function(elem, index) {
-      var modelName = await elem.getAttribute('model');
-      console.log(modelName);
-    }
-  ) */
-
-  const one = function (str) {
+  const processNgModel = function (str) {
     var x = str.split('.')
     return `await element(by.model('${str}')).sendKeys(${x[1]})`;
   }
 
-  const two = function (str) {
+  const processModel = function (str) {
     var x = str.split('.')
     return `await dropdown('${str}', ${x[1]})`;
   }
   var params = []
   var body = []
   const count_all = await form.all(by.css('[ng-model],[model]')).count();
-  console.log(`count: ${count_all}`);
+  // console.log(`count: ${count_all}`);
   await form.all(by.css('[ng-model],[model]')).each(
     async function (elem, index) {
       var model = await elem.getAttribute('model');
       var ngModel = await elem.getAttribute('ng-model');
       var par = (model === null) ? ngModel : model;
       params.push(par.split('.')[1]);
-      body.push((model === null) ? one(ngModel) : two(model));
+      body.push((model === null) ? processNgModel(ngModel) : processModel(model));
     }
   );
   var paramsStr = params.join(',\n');
   var bodyStr = body.join('\n')
-  var func = `
-async function (
+  var func = `async function (
 ${paramsStr}
 ) {
 ${bodyStr}
+}`;
+func = `export default ${func}`;
+  // console.log(func);
+  return func;
 }
-  `
-  console.log(func);
+
+const generateTest = async function (value) {
+  var pagesPath = path.join(rootPath, 'temp', 'pages');
+  // console.log(pagesPath);
+  await clickSidebarMenu(value);
+  var terus = await bisaClickTambah();
+  if (!terus) return;
+  var browserTitle = await browser.getTitle();
+  // expect(toLower(browserTitle)).toEqual(toLower(value));
+  await clickTambah();
+
+  const fn = snakeCase(toLower(value));
+  var fname = `${pagesPath}/${fn}.add.spec.js`;
+  /* console.log(fname);
+  var mdl = `// model:`;
+  let main = await element(by.className('main'));
+  await main.all(by.css('[ng-model],[model]')).each(
+    async function (element, index) {
+      var model = await element.getWebElement().getAttribute('ng-model');
+      mdl += `\n// ${model}`
+      // console.log(model);
+    }
+  ) */
+  var mdl = await getModelList(value);
+  // console.log(mdl);
+  fs.writeFileSync(`${fname}`, mdl)
 }
 
 module.exports = {
@@ -190,5 +235,8 @@ module.exports = {
   clickTambah,
   dropdown,
   clickContextMenu,
-  getModelList
+  getModelList,
+  listSideBar,
+  bisaClickTambah,
+  generateTest
 }

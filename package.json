@@ -8,7 +8,8 @@
     "wm:start": "node_modules/.bin/webdriver-manager start",
     "wm:update": "node_modules/.bin/webdriver-manager update",
     "start": "node -r @babel/register run.js",
-    "protractor": "node -r @babel/register node_modules/.bin/protractor conf.js"
+    "protractor": "node -r @babel/register node_modules/.bin/protractor conf.js",
+    "generate": "node -r @babel/register node_modules/.bin/protractor generate.js"
   },
   "author": "",
   "license": "MIT",
