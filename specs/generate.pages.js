@@ -36,6 +36,7 @@ describe('sidebar', function () {
     list,
     function (name, key) {
       it(`generate form helper: ${name}`, () => generateFormFiller(name));
+      it(`generate form helper: ${name}`, () => generateFormValueGetter(name));
     }
   );
 })

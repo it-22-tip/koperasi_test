@@ -38,6 +38,13 @@ const dropdown = async function (model, selection) {
     .click();
 }
 
+const dropdownValue = async function (model) {
+  // TODO: cari tau kenapa dropdown ini ga bisa di cari pakai model
+  var dropdown = await element(by.css(`[model="${model}"]`));
+  var text = await dropdown.element(by.css('[class="text"]')).getText();
+  return text();
+}
+
 
 /**
  * Membuka Sidebar dan click Logout
@@ -154,6 +161,61 @@ const listSideBar = async function () {
   return arr;
 }
 
+const getModelVal = async function (page) {
+  const form = await element(by.className('form'));
+  const processNgModel = function (str) {
+    var x = str.split('.')
+    return `case '${str}':
+    \tret = await element(by.model('${str}')).getAttribute('value');
+    \tbreak;
+`;
+  }
+  const processModel = function (str) {
+    var x = str.split('.')
+    return `case '${str}':
+    \tret = await dropdownValue('${str}');
+    \tbreak;`;
+  }
+  let params = []
+  let body = []
+  await form.all(by.css('[ng-model],[model]')).each(
+    async function (elem, index) {
+      var model = await elem.getAttribute('model');
+      var ngModel = await elem.getAttribute('ng-model');
+      var par = (model === null) ? ngModel : model;
+      params.push(par.split('.')[1]);
+      body.push((model === null) ? processNgModel(ngModel) : processModel(model));
+    }
+  );
+  var paramsStr = reduce(
+    params,
+    function (result, value, key) {
+      let v = ((params.length-1) === key) ? `\t${value}` : `\t${value},\n`;
+      return `${result}${v}`;
+    },
+    ''
+  );
+  var bodyStr = reduce(
+    body,
+    function (result, value, key) {
+      let v = `\t\t${value}\n`;
+      return `${result}${v}`;
+    },
+    ''
+  );
+  var func = `async function (\n`
+  func += `searchModel` // `${paramsStr}`
+  func += `\n) {\n`;
+  func += `\tlet ret;\n`;
+  func += `\tswitch (searchModel) {\n`;
+  func += `${bodyStr}`;
+  func += `\t}\n`;
+  func += `\treturn ret;\n`;
+  func += `}`;
+  func = `export default ${func}`;
+  return func;
+}
+
 const getModelList = async function (page) {
   const form = await element(by.className('form'));
   const processNgModel = function (str) {
@@ -252,7 +314,7 @@ const generateFormFiller = async function (name) {
   if (!await bisaClickTambah()) return;
   await clickTambah();
 
-  var filename = `${pagesPath}/${snakeCase(toLower(name))}_add.form.js`;
+  var filename = `${pagesPath}/${snakeCase(toLower(name))}_add.filler.js`;
   var form = await getModelList(name);
   writeFileSync(`${filename}`, form)
 }
@@ -263,8 +325,8 @@ const generateFormValueGetter = async function (name) {
   if (!await bisaClickTambah()) return;
   await clickTambah();
 
-  var filename = `${pagesPath}/${snakeCase(toLower(name))}_add.form.js`;
-  var form = await getModelList(name);
+  var filename = `${pagesPath}/${snakeCase(toLower(name))}_add.getter.js`;
+  var form = await getModelVal(name);
   writeFileSync(`${filename}`, form)
 }
 
