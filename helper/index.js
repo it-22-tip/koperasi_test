@@ -167,14 +167,13 @@ const getModelVal = async function (page) {
     var x = str.split('.')
     return `case '${str}':
     \tret = await element(by.model('${str}')).getAttribute('value');
-    \tbreak;
-`;
+    \tbreak;\n`;
   }
   const processModel = function (str) {
     var x = str.split('.')
     return `case '${str}':
     \tret = await dropdownValue('${str}');
-    \tbreak;`;
+    \tbreak;\n`;
   }
   let params = []
   let body = []
@@ -187,24 +186,16 @@ const getModelVal = async function (page) {
       body.push((model === null) ? processNgModel(ngModel) : processModel(model));
     }
   );
-  var paramsStr = reduce(
-    params,
-    function (result, value, key) {
-      let v = ((params.length-1) === key) ? `\t${value}` : `\t${value},\n`;
-      return `${result}${v}`;
-    },
-    ''
-  );
   var bodyStr = reduce(
     body,
     function (result, value, key) {
-      let v = `\t\t${value}\n`;
+      let v = `\t\t${value}`;
       return `${result}${v}`;
     },
     ''
   );
   var func = `async function (\n`
-  func += `searchModel` // `${paramsStr}`
+  func += `\tsearchModel` // `${paramsStr}`
   func += `\n) {\n`;
   func += `\tlet ret;\n`;
   func += `\tswitch (searchModel) {\n`;
@@ -217,52 +208,6 @@ const getModelVal = async function (page) {
 }
 
 const getModelList = async function (page) {
-  const form = await element(by.className('form'));
-  const processNgModel = function (str) {
-    var x = str.split('.')
-    return `await element(by.model('${str}')).sendKeys(${x[1]})`;
-  }
-  const processModel = function (str) {
-    var x = str.split('.')
-    return `await dropdown('${str}', ${x[1]})`;
-  }
-  let params = []
-  let body = []
-  await form.all(by.css('[ng-model],[model]')).each(
-    async function (elem, index) {
-      var model = await elem.getAttribute('model');
-      var ngModel = await elem.getAttribute('ng-model');
-      var par = (model === null) ? ngModel : model;
-      params.push(par.split('.')[1]);
-      body.push((model === null) ? processNgModel(ngModel) : processModel(model));
-    }
-  );
-  var paramsStr = reduce(
-    params,
-    function (result, value, key) {
-      let v = ((params.length-1) === key) ? `\t${value}` : `\t${value},\n`;
-      return `${result}${v}`;
-    },
-    ''
-  );
-  var bodyStr = reduce(
-    body,
-    function (result, value, key) {
-      let v = (key === 0) ? `\t${value};\n` : `\t${value};\n`;
-      return `${result}${v}`;
-    },
-    ''
-  );
-  var func = `async function (\n`
-  func += `${paramsStr}`
-  func += `\n) {\n`
-  func += `${bodyStr}`
-  func += `}`;
-  func = `export default ${func}`;
-  return func;
-}
-
-const genGetter = async function (page) {
   const form = await element(by.className('form'));
   const processNgModel = function (str) {
     var x = str.split('.')
