@@ -1,7 +1,6 @@
-import _ from 'lodash';
 import path from 'path';
-const fs = require('fs');
-const { trim, toLower, forEach, snakeCase } = _;
+import { writeFileSync } from 'fs';
+import { trim, toLower, snakeCase, reduce } from 'lodash';
 import { waitToBeNotDisplayed } from '@hetznercloud/protractor-test-helper';
 
 /**
@@ -92,12 +91,7 @@ const clickSidebarMenu = async function (target) {
     .perform();
   // await browser.sleep(300);
   //await browser.wait(protractor.ExpectedConditions.invisibilityOf(menu, 1000));
-    // await waitToBeNotDisplayed(menu)
-}
-
-const findClickMenu = async function () {
-  await openSideBar();
-
+    // await waitToBeNotDisplayed(menu);
 }
 
 /**
@@ -161,23 +155,17 @@ const listSideBar = async function () {
 }
 
 const getModelList = async function (page) {
-  // await clickSidebarMenu(page);
-  //  await clickTambah();
   const form = await element(by.className('form'));
-
   const processNgModel = function (str) {
     var x = str.split('.')
     return `await element(by.model('${str}')).sendKeys(${x[1]})`;
   }
-
   const processModel = function (str) {
     var x = str.split('.')
     return `await dropdown('${str}', ${x[1]})`;
   }
-  var params = []
-  var body = []
-  const count_all = await form.all(by.css('[ng-model],[model]')).count();
-  // console.log(`count: ${count_all}`);
+  let params = []
+  let body = []
   await form.all(by.css('[ng-model],[model]')).each(
     async function (elem, index) {
       var model = await elem.getAttribute('model');
@@ -187,43 +175,97 @@ const getModelList = async function (page) {
       body.push((model === null) ? processNgModel(ngModel) : processModel(model));
     }
   );
-  var paramsStr = params.join(',\n');
-  var bodyStr = body.join('\n')
-  var func = `async function (
-${paramsStr}
-) {
-${bodyStr}
-}`;
-func = `export default ${func}`;
-  // console.log(func);
+  var paramsStr = reduce(
+    params,
+    function (result, value, key) {
+      let v = ((params.length-1) === key) ? `\t${value}` : `\t${value},\n`;
+      return `${result}${v}`;
+    },
+    ''
+  );
+  var bodyStr = reduce(
+    body,
+    function (result, value, key) {
+      let v = (key === 0) ? `\t${value};\n` : `\t${value};\n`;
+      return `${result}${v}`;
+    },
+    ''
+  );
+  var func = `async function (\n`
+  func += `${paramsStr}`
+  func += `\n) {\n`
+  func += `${bodyStr}`
+  func += `}`;
+  func = `export default ${func}`;
   return func;
 }
 
-const generateTest = async function (value) {
+const genGetter = async function (page) {
+  const form = await element(by.className('form'));
+  const processNgModel = function (str) {
+    var x = str.split('.')
+    return `await element(by.model('${str}')).sendKeys(${x[1]})`;
+  }
+  const processModel = function (str) {
+    var x = str.split('.')
+    return `await dropdown('${str}', ${x[1]})`;
+  }
+  let params = []
+  let body = []
+  await form.all(by.css('[ng-model],[model]')).each(
+    async function (elem, index) {
+      var model = await elem.getAttribute('model');
+      var ngModel = await elem.getAttribute('ng-model');
+      var par = (model === null) ? ngModel : model;
+      params.push(par.split('.')[1]);
+      body.push((model === null) ? processNgModel(ngModel) : processModel(model));
+    }
+  );
+  var paramsStr = reduce(
+    params,
+    function (result, value, key) {
+      let v = ((params.length-1) === key) ? `\t${value}` : `\t${value},\n`;
+      return `${result}${v}`;
+    },
+    ''
+  );
+  var bodyStr = reduce(
+    body,
+    function (result, value, key) {
+      let v = (key === 0) ? `\t${value};\n` : `\t${value};\n`;
+      return `${result}${v}`;
+    },
+    ''
+  );
+  var func = `async function (\n`
+  func += `${paramsStr}`
+  func += `\n) {\n`
+  func += `${bodyStr}`
+  func += `}`;
+  func = `export default ${func}`;
+  return func;
+}
+
+const generateFormFiller = async function (name) {
   var pagesPath = path.join(rootPath, 'temp', 'pages');
-  // console.log(pagesPath);
-  await clickSidebarMenu(value);
-  var terus = await bisaClickTambah();
-  if (!terus) return;
-  var browserTitle = await browser.getTitle();
-  // expect(toLower(browserTitle)).toEqual(toLower(value));
+  await clickSidebarMenu(name);
+  if (!await bisaClickTambah()) return;
   await clickTambah();
 
-  const fn = snakeCase(toLower(value));
-  var fname = `${pagesPath}/${fn}.add.spec.js`;
-  /* console.log(fname);
-  var mdl = `// model:`;
-  let main = await element(by.className('main'));
-  await main.all(by.css('[ng-model],[model]')).each(
-    async function (element, index) {
-      var model = await element.getWebElement().getAttribute('ng-model');
-      mdl += `\n// ${model}`
-      // console.log(model);
-    }
-  ) */
-  var mdl = await getModelList(value);
-  // console.log(mdl);
-  fs.writeFileSync(`${fname}`, mdl)
+  var filename = `${pagesPath}/${snakeCase(toLower(name))}_add.form.js`;
+  var form = await getModelList(name);
+  writeFileSync(`${filename}`, form)
+}
+
+const generateFormValueGetter = async function (name) {
+  var pagesPath = path.join(rootPath, 'temp', 'pages');
+  await clickSidebarMenu(name);
+  if (!await bisaClickTambah()) return;
+  await clickTambah();
+
+  var filename = `${pagesPath}/${snakeCase(toLower(name))}_add.form.js`;
+  var form = await getModelList(name);
+  writeFileSync(`${filename}`, form)
 }
 
 module.exports = {
@@ -238,5 +280,6 @@ module.exports = {
   getModelList,
   listSideBar,
   bisaClickTambah,
-  generateTest
+  generateFormFiller,
+  generateFormValueGetter
 }

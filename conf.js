@@ -40,7 +40,8 @@ const config = {
       clickContextMenu,
       getModelList,
       listSideBar,
-      generateTest,
+      generateFormFiller,
+      generateFormValueGetter,
       bisaClickTambah
     } = helper;
     global.clickBackButton = clickBackButton;
@@ -54,7 +55,8 @@ const config = {
     global.getModelList = getModelList;
     global.listSideBar = listSideBar;
     global.bisaClickTambah = bisaClickTambah;
-    global.generateTest = generateTest;
+    global.generateFormFiller = generateFormFiller;
+    global.generateFormValueGetter = generateFormValueGetter;
     global.rootPath = path.resolve(__dirname);
   },
 };
