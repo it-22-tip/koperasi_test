@@ -1,6 +1,6 @@
 import path from 'path';
 import { writeFileSync } from 'fs';
-import { trim, toLower, snakeCase, reduce } from 'lodash';
+import { trim, toLower, snakeCase, reduce, assign, keyBy } from 'lodash';
 import { waitToBeNotDisplayed } from '@hetznercloud/protractor-test-helper';
 
 /**
@@ -266,6 +266,7 @@ const getModel = async function () {
   }
   let form = await element(by.className('form'));
   var obj = {
+    jsonTemplate: {},
     setterParams: [],
     getter: [],
     setter: [],
@@ -278,7 +279,10 @@ const getModel = async function () {
       // let checkBoxAttribute = await elem.element(by.css('[type="checkbox"]'));
       let par = (ngModelAttribute === null) ? modelAttribute.split('.')[1] : ngModelAttribute.split('.')[1];
       // console.log(par)
-      if (par !== undefined) obj.setterParams.push(par);
+      if (par !== undefined) {
+        obj.setterParams.push(par);
+        obj.jsonTemplate[par] = '';
+      };
       // start if else
       if (ngModelAttribute !== null) {
         let fileAttribute = await elem.element(by.css('[type="file"]'));
@@ -298,11 +302,11 @@ const getModel = async function () {
         if (checkBoxAttribute !== null) { // checkboxinput
           var getterStatement = `await element(by.model('${modelAttribute}')).getAttribute('value')`;
           obj.getter.push(getterTemplate(modelAttribute, getterStatement));
-          obj.setter.push(`// checkbox await dropdown('${modelAttribute}', ${modelAttribute.split('.')[1]})`);
+          obj.setter.push(`await dropdown('${modelAttribute}', ${modelAttribute.split('.')[1]})`);
         } else {
           var getterStatement = `await dropdownValue('${modelAttribute}')`
           obj.getter.push(getterTemplate(modelAttribute, getterStatement));
-          obj.setter.push(`await dropdown('${modelAttribute}', ${modelAttribute.split('.')[1]})`);
+          obj.setter.push(`// checkbox await dropdown('${modelAttribute}', ${modelAttribute.split('.')[1]})`);
         }
       }
       // dataArray.push(obj);
@@ -341,8 +345,8 @@ const generateJsonDummyTemplate = async function (name) {
   await clickTambah();
 
   // var filename = `${pagesPath}/${snakeCase(toLower(name))}_dummy.json`;
-  var form = await getModel(name);
-  console.log(form);
+  var data = await getModel(data);
+  console.log(data);
   // writeFileSync(`${filename}`, form);
 }
 
