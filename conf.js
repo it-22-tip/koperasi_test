@@ -42,6 +42,7 @@ const config = {
       listSideBar,
       generateFormFiller,
       generateFormValueGetter,
+      generateJsonDummyTemplate,
       bisaClickTambah
     } = helper;
     global.clickBackButton = clickBackButton;
@@ -57,6 +58,7 @@ const config = {
     global.bisaClickTambah = bisaClickTambah;
     global.generateFormFiller = generateFormFiller;
     global.generateFormValueGetter = generateFormValueGetter;
+    global.generateJsonDummyTemplate = generateJsonDummyTemplate;
     global.rootPath = path.resolve(__dirname);
   },
 };
