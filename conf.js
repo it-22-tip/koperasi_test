@@ -14,7 +14,8 @@ const config = {
   specs: [
     // 'specs/anggota-add.spec.js'
     // 'specs/sidebar.spec.js',
-    'specs/pages.add.spec.js',
+    // 'specs/pages.add.spec.js',
+    'specs/sibling.js',
     // 'specs/try.spec.js'
   ],
   /**
