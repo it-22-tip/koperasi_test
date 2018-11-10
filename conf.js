@@ -44,7 +44,8 @@ const config = {
       generateFormFiller,
       generateFormValueGetter,
       generateJsonDummyTemplate,
-      bisaClickTambah
+      bisaClickTambah,
+      fillautocomplete
     } = helper;
     global.clickBackButton = clickBackButton;
     global.login = login;
@@ -60,6 +61,7 @@ const config = {
     global.generateFormFiller = generateFormFiller;
     global.generateFormValueGetter = generateFormValueGetter;
     global.generateJsonDummyTemplate = generateJsonDummyTemplate;
+    global.fillautocomplete = fillautocomplete;
     global.rootPath = path.resolve(__dirname);
   },
 };

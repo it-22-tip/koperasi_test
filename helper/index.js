@@ -1,42 +1,11 @@
 import path from 'path';
+import dropdown from './dropdown'
+// import gotopage from './gotopage';
+import openSideBar from './opensidebar'
+import login from './login'
 import { writeFileSync } from 'fs';
 import { trim, toLower, snakeCase, reduce, assign, keyBy } from 'lodash';
 import { waitToBeNotDisplayed } from '@hetznercloud/protractor-test-helper';
-
-/**
- *
- */
-const goToUrl = async function (page) {
-  const { base_url } = browser.params;
-  const url = `${base_url}/${page}`;
-  // console.log(url);
-  await browser.get(url);
-}
-
-const login = async function () {
-  await goToUrl('masuk');
-  element(by.partialButtonText('Masuk')).click();
-  expect(browser.getTitle()).toEqual('Dashboard');
-}
-
-/**
- * Dropdown
- */
-const dropdown = async function (model, selection) {
-    // TODO: cari tau kenapa dropdown ini ga bisa di cari pakai model
-    var dropdown = await element(by.css(`[model="${model}"]`));
-    await dropdown.click();
-    // menu itu  ada di dalam class: menu transition baru di cari di repeater
-    var menu = await dropdown.element(by.className('menu transition'));
-    await menu.all(by.repeater('item in items')).filter(
-      async function (element, index) {
-        var text = await element.getText();
-        return text === selection;
-      }
-    )
-    .first()
-    .click();
-}
 
 const dropdownValue = async function (model) {
   // TODO: cari tau kenapa dropdown ini ga bisa di cari pakai model
@@ -57,19 +26,6 @@ const logout = async function () {
     .mouseMove(logoutButton)
     .perform();
   await logoutButton.click();
-}
-
-/**
- * Membuka sidebar
- */
-const openSideBar = async function () {
-  let selector = '[ng-mousemove="(typeof($localStorage.currentUser) === \'undefined\') ? \'\' : toggleMenu($event)"]';
-  let screenEdge = element(by.css(selector));
-  // pindah mouse ke sisi kiri untuk menampilkan sidebar
-  await browser.actions()
-    .mouseMove(screenEdge, {x: 0, y: 0})
-    .perform();
-  return screenEdge;
 }
 
 const clickSidebarMenu = async function (target) {
@@ -350,6 +306,22 @@ const generateJsonDummyTemplate = async function (name) {
   // writeFileSync(`${filename}`, form);
 }
 
+const fillautocomplete = async function (model, sendVal, searchVal = '') {
+  let selector = `[ng-model="${model}"]`;
+  searchVal = (searchVal === '') ? sendVal : searchVal;
+  let hidden = await element.all(by.css(selector)).first();
+  let textField = await hidden.element(by.xpath('preceding-sibling::div')).element(by.model('text'));
+  await textField.sendKeys(searchVal);
+  let folowingParent = await textField.element(by.xpath('..')).element(by.xpath('following-sibling::div'));
+  browser.wait(protractor.ExpectedConditions.visibilityOf(folowingParent), 3000);
+  let c = await folowingParent.all(by.css('[class="result"]')).filter(
+    async function (elem, index) {
+      let texts = await elem.getText()
+      return texts === sendVal;
+    }
+  ).first().click();
+}
+
 module.exports = {
   login,
   logout,
@@ -364,5 +336,6 @@ module.exports = {
   bisaClickTambah,
   generateFormFiller,
   generateFormValueGetter,
-  generateJsonDummyTemplate
+  generateJsonDummyTemplate,
+  fillautocomplete
 }
