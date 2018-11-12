@@ -1,4 +1,7 @@
-import clickSidebarMenu from './clicksidebarmenu';
+import click_sidemenu from './click_sidemenu';
+import has_click_tambah from './has_click_tambah';
+import click_tambah from './click_tambah';
+
 
 const getModel = async function () {
   let dataArray = [];
@@ -59,9 +62,9 @@ const getModel = async function () {
 
 const generateJsonDummyTemplate = async function (name) {
   // var pagesPath = path.join(rootPath, 'temp', 'pages');
-  await clickSidebarMenu(name);
-  if (!await bisaClickTambah()) return;
-  await clickTambah();
+  await click_sidemenu(name);
+  if (!await has_click_tambah()) return;
+  await click_tambah();
 
   // var filename = `${pagesPath}/${snakeCase(toLower(name))}_dummy.json`;
   var data = await getModel(data);

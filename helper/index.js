@@ -12,7 +12,7 @@ import open_tablecontextmenu from './open_tablecontextmenu';
 import select_dropdown from './select_dropdown';
 import value_dropdown from './value_dropdown';
 
-export default [
+export {
   click_redbackbutton,
   click_sidemenu,
   click_tambah,
@@ -26,4 +26,4 @@ export default [
   open_tablecontextmenu,
   select_dropdown,
   value_dropdown
-]
+}

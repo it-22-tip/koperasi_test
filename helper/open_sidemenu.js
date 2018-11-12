@@ -5,5 +5,4 @@ export default async function () {
   await browser.actions()
     .mouseMove(screenEdge, {x: 0, y: 0})
     .perform();
-  return screenEdge;
 }

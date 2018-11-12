@@ -1,4 +1,4 @@
-import openSideBar from './opensidebar.action';
+import openSideBar from './open_sidemenu';
 /**
  * Membuka Sidebar dan click Logout
  */
