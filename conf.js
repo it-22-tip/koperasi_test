@@ -41,9 +41,7 @@ const config = {
       clickContextMenu,
       getModelList,
       listSideBar,
-      generateFormFiller,
-      generateFormValueGetter,
-      generateJsonDummyTemplate,
+      testHelperGenerator,
       bisaClickTambah,
       fillautocomplete
     } = helper;
@@ -58,9 +56,7 @@ const config = {
     global.getModelList = getModelList;
     global.listSideBar = listSideBar;
     global.bisaClickTambah = bisaClickTambah;
-    global.generateFormFiller = generateFormFiller;
-    global.generateFormValueGetter = generateFormValueGetter;
-    global.generateJsonDummyTemplate = generateJsonDummyTemplate;
+    global.testHelperGenerator = testHelperGenerator;
     global.fillautocomplete = fillautocomplete;
     global.rootPath = path.resolve(__dirname);
   },
