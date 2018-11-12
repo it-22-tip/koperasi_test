@@ -31,33 +31,33 @@ const config = {
   onPrepare() {
     installMatcher();
     var {
-      clickBackButton,
+      click_redbackbutton,
+      click_sidemenu,
+      click_tambah,
+      fill_autocomplete,
+      generate_testhelper,
+      has_click_tambah,
+      list_sidemenuitems,
       login,
       logout,
-      openSideBar,
-      clickSidebarMenu,
-      clickTambah,
-      dropdown,
-      clickContextMenu,
-      getModelList,
-      listSideBar,
-      testHelperGenerator,
-      bisaClickTambah,
-      fillautocomplete
+      open_sidemenu,
+      open_tablecontextmenu,
+      select_dropdown,
+      value_dropdown
     } = helper;
-    global.clickBackButton = clickBackButton;
+    global.click_redbackbutton = click_redbackbutton;
+    global.click_sidemenu = click_sidemenu;
+    global.click_tambah = click_tambah;
+    global.fill_autocomplete = fill_autocomplete;
+    global.generate_testhelper = generate_testhelper;
+    global.has_click_tambah = has_click_tambah;
+    global.list_sidemenuitems = list_sidemenuitems;
     global.login = login;
     global.logout = logout;
-    global.clickSidebarMenu = clickSidebarMenu;
-    global.openSideBar = openSideBar;
-    global.clickTambah = clickTambah;
-    global.dropdown = dropdown;
-    global.clickContextMenu = clickContextMenu;
-    global.getModelList = getModelList;
-    global.listSideBar = listSideBar;
-    global.bisaClickTambah = bisaClickTambah;
-    global.testHelperGenerator = testHelperGenerator;
-    global.fillautocomplete = fillautocomplete;
+    global.open_sidemenu = open_sidemenu;
+    global.open_tablecontextmenu = open_tablecontextmenu;
+    global.select_dropdown = select_dropdown;
+    global.value_dropdown = value_dropdown;
     global.rootPath = path.resolve(__dirname);
   },
 };
