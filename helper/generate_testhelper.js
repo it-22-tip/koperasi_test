@@ -2,12 +2,17 @@ import click_sidemenu from './click_sidemenu';
 import has_click_tambah from './has_click_tambah';
 import click_tambah from './click_tambah';
 
+const getterCase = function (model, statement) {
+return `case '${model}':
+  returnValue = ${statement};
+  break;`;
+}
 
 const getModel = async function () {
   let dataArray = [];
-  let getterTemplate = function (model, statement) {
+  /* let getterCase = function (model, statement) {
     return `case '${model}':\n\treturnValue = ${statement};\n\tbreak;\n`;
-  }
+  } */
   let form = await element(by.className('form'));
   var obj = {
     jsonTemplate: {},
@@ -33,11 +38,11 @@ const getModel = async function () {
         // obj.param = ngModelAttribute.split('.')[1];
         if (fileAttribute !== null) { // file input
           var getterStatement = `null; // await element(by.model('${ngModelAttribute}')).getAttribute('value');`;
-          obj.getter.push(getterTemplate(ngModelAttribute, getterStatement));
+          obj.getter.push(getterCase(ngModelAttribute, getterStatement));
           obj.setter.push(`await element(by.model('${ngModelAttribute}')).sendKeys(${ngModelAttribute.split('.')[1]})`);
         } else { // textinput
           var getterStatement = `await element(by.model('${ngModelAttribute}')).getAttribute('value')`;
-          obj.getter.push(getterTemplate(ngModelAttribute, getterStatement));
+          obj.getter.push(getterCase(ngModelAttribute, getterStatement));
           obj.setter.push(`await element(by.model('${ngModelAttribute}')).sendKeys(${ngModelAttribute.split('.')[1]})`);
         }
       } else if (modelAttribute !== null) {
@@ -45,11 +50,11 @@ const getModel = async function () {
         // obj.param = modelAttribute.split('.')[1];
         if (checkBoxAttribute !== null) { // checkboxinput
           var getterStatement = `await element(by.model('${modelAttribute}')).getAttribute('value')`;
-          obj.getter.push(getterTemplate(modelAttribute, getterStatement));
+          obj.getter.push(getterCase(modelAttribute, getterStatement));
           obj.setter.push(`await dropdown('${modelAttribute}', ${modelAttribute.split('.')[1]})`);
         } else {
           var getterStatement = `await dropdownValue('${modelAttribute}')`
-          obj.getter.push(getterTemplate(modelAttribute, getterStatement));
+          obj.getter.push(getterCase(modelAttribute, getterStatement));
           obj.setter.push(`// checkbox await dropdown('${modelAttribute}', ${modelAttribute.split('.')[1]})`);
         }
       }
